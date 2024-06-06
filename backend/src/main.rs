@@ -40,13 +40,13 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         let cors = Cors::default()
-            .allowed_origin("http://localhost:3000")
-            .allowed_methods(vec!["GET", "POST", "PATCH", "DELETE"])
+            .allowed_origin("http://127.0.0.1:3000")
+            .allowed_methods(vec!["GET", "POST", "PATCH", "DELETE", "OPTIONS"])
             .allowed_headers(vec![
-                header::CONTENT_TYPE,
                 header::AUTHORIZATION,
                 header::ACCEPT,
             ])
+            .allowed_header(header::CONTENT_TYPE)
             .supports_credentials();
         App::new()
             .app_data(web::Data::new(AppState { db: pool.clone() }))

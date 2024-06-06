@@ -33,8 +33,8 @@ fn App() -> Html {
                 }
             <main class="md:container mt-24 px-5">
                 <FeedbackForm />
-                <FeedbackStats />
-                <FeedbackList />
+                // <FeedbackStats />
+                // <FeedbackList />
             </main>
             if *loading {
                 <div

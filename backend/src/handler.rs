@@ -6,12 +6,46 @@ use crate::{
 use actix_web::{delete, get, patch, post, web, HttpResponse, Responder};
 use chrono::prelude::*;
 use serde_json::json;
+use std::fs;
+use base64;
+use image::ImageFormat;
+use tokio::fs::File;
+use tokio::io::AsyncWriteExt;
 
 #[get("/healthchecker")]
 async fn health_checker_handler() -> impl Responder {
     const MESSAGE: &str = "Build API with Rust, SQLX, Postgres,and Actix Web";
 
     HttpResponse::Ok().json(json!({"status": "success","message": MESSAGE}))
+}
+
+#[post("/images/")] // Assuming this is the endpoint to receive image data
+async fn upload_image_handler(image_data: web::Json<String>) -> impl Responder {
+    let base64_data = image_data.0;
+
+    // Decode the base64 data to get the raw image data
+    let image_bytes = base64::decode(&base64_data).unwrap();
+
+    // Generate a unique filename for the image
+    let filename = format!("image_{}.png", uuid::Uuid::new_v4().to_string());
+    let file_path = format!("./{}", filename);
+
+    // Save the image to the current folder
+    match fs::write(&file_path, &image_bytes) {
+        Ok(_) => {
+            HttpResponse::Ok().json("Image uploaded successfully")
+        }
+        Err(e) => {
+            HttpResponse::InternalServerError().json("Error uploading image")
+        }
+    }
+}
+
+// Helper function to save the image asynchronously
+async fn save_image(file_path: &str, data: Vec<u8>) -> Result<(), std::io::Error> {
+    let mut file = File::create(file_path).await?;
+    file.write_all(&data).await?;
+    Ok(())
 }
 
 #[get("/feedbacks")]
@@ -52,10 +86,31 @@ async fn create_feedback_handler(
     body: web::Json<CreateFeedbackSchema>,
     data: web::Data<AppState>,
 ) -> impl Responder {
+    let data_url = &body.text;
+
+    // Strip the prefix
+    let base64_data = match data_url.split(',').nth(1) {
+        Some(data) => data,
+        None => return HttpResponse::BadRequest().json(serde_json::json!({"status": "fail", "message": "Invalid data URL"})),
+    };
+
+    // Decode the Base64 string
+    let decoded_data = match base64::decode(base64_data) {
+        Ok(data) => data,
+        Err(_) => return HttpResponse::BadRequest().json(serde_json::json!({"status": "fail", "message": "Failed to decode Base64 string"})),
+    };
+
+    // Write the decoded data to an image file asynchronously
+    match save_image("output.jpg", decoded_data).await {
+        Ok(_) => println!("Image has been saved successfully."),
+        Err(_) => return HttpResponse::InternalServerError().json(serde_json::json!({"status": "error", "message": "Failed to save image"})),
+    };
+
+
     let query_result = sqlx::query_as!(
         FeedbackModel,
         "INSERT INTO feedbacks (text,rating) VALUES ($1, $2) RETURNING *",
-        body.text.to_string(),
+        "yes".to_string(),
         body.rating,
     )
     .fetch_one(&data.db)
@@ -191,7 +246,8 @@ pub fn config(conf: &mut web::ServiceConfig) {
         .service(create_feedback_handler)
         .service(get_feedback_handler)
         .service(edit_feedback_handler)
-        .service(delete_feedback_handler);
+        .service(delete_feedback_handler)
+        .service(upload_image_handler);
 
     conf.service(scope);
 }
