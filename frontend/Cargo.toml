@@ -10,7 +10,7 @@ gloo = "0.11.0"
 serde = { version = "1.0.152", features = ["derive"] }
 uuid = { version = "1.3.0", features = ["serde", "v4", "js"] }
 wasm-bindgen = "0.2.84"
-web-sys = { version = "0.3.61", features = ["HtmlInputElement", "Window"] }
+web-sys = { version = "0.3.61", features = ["HtmlInputElement", "HtmlImageElement", "Window"] }
 yew = { version = "0.21.0", features = ["csr"] }
 yewdux = "0.10.0"
 reqwasm = "0.5.0"

@@ -5,7 +5,7 @@ use crate::{
 };
 use wasm_bindgen::JsCast;
 use wasm_bindgen_futures::spawn_local;
-use web_sys::HtmlInputElement;
+use web_sys::{HtmlInputElement,HtmlImageElement};
 use yew::prelude::*;
 use yewdux::prelude::*;
 
@@ -139,6 +139,7 @@ use common::{ErrorResponse, Feedback, FeedbackListResponse, FeedbackResponse};
 pub fn FeedbackForm() -> Html {
     let file_data = use_state(|| None);
     let file_name = use_state(|| String::new());
+    let image_input_ref = use_node_ref();
 
     let on_file_change = {
         let file_data = file_data.clone();
@@ -172,8 +173,10 @@ pub fn FeedbackForm() -> Html {
     info!("Hello {}", object.as_string().unwrap());
 
     let get_image_data = {
+        let cloned_image_input_ref = image_input_ref.clone();
         let file_data = file_data.clone();
         Callback::from(move |_| {
+            let image_input_ref = cloned_image_input_ref.clone();
             if let Some(data_url) = &*file_data {
                 let data_url = data_url.clone();
                 let feedback_data = serde_json::json!({
@@ -182,6 +185,8 @@ pub fn FeedbackForm() -> Html {
                 });
 
                 spawn_local(async move {
+                    let image_input = image_input_ref.cast::<HtmlImageElement>().unwrap();
+                    image_input.set_src("https://raw.githubusercontent.com/BaoNinh2808/Sequelize-Exercise/main/2849110.jpg");
                     let response = api_create_feedback(feedback_data.to_string().as_str()).await; 
                 });
 
@@ -206,7 +211,7 @@ pub fn FeedbackForm() -> Html {
             {
                 if let Some(data_url) = &*file_data {
                     html! {
-                        <img src={data_url.clone()} alt="Uploaded image" class="w-full border border-gray-400 rounded-md shadow-md" />
+                        <img src={data_url.clone()} ref={image_input_ref} alt="Uploaded image" class="w-full border border-gray-400 rounded-md shadow-md" />
                     }
                 } else {
                     html! { <p class="text-gray-600">{ "No image uploaded yet." }</p> }

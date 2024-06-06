@@ -7,6 +7,7 @@ use actix_web::{delete, get, patch, post, web, HttpResponse, Responder};
 use chrono::prelude::*;
 use serde_json::json;
 use std::fs;
+use uuid::Uuid;
 use base64;
 use image::ImageFormat;
 use tokio::fs::File;
@@ -100,17 +101,25 @@ async fn create_feedback_handler(
         Err(_) => return HttpResponse::BadRequest().json(serde_json::json!({"status": "fail", "message": "Failed to decode Base64 string"})),
     };
 
+    // Generate a UUID
+    let uuid = Uuid::new_v4();
+
+    // Convert UUID to string
+    let uuid_string = uuid.to_string();
+
     // Write the decoded data to an image file asynchronously
-    match save_image("output.jpg", decoded_data).await {
+    let out_name = format!("database/{}.jpg", uuid_string);
+    match save_image(&out_name, decoded_data).await {
         Ok(_) => println!("Image has been saved successfully."),
         Err(_) => return HttpResponse::InternalServerError().json(serde_json::json!({"status": "error", "message": "Failed to save image"})),
     };
 
+    
 
     let query_result = sqlx::query_as!(
         FeedbackModel,
         "INSERT INTO feedbacks (text,rating) VALUES ($1, $2) RETURNING *",
-        "yes".to_string(),
+        uuid_string,
         body.rating,
     )
     .fetch_one(&data.db)
