@@ -25,3 +25,10 @@ And when own the certificate, user can exchange this for the profit in the excha
 
 ![idea](/images/idea.png)
 
+## Project Struct
+
+- **back-end**: handle back-end behavior of system
+- **front-end**: render interface on web and create request to back-end
+- **common**: communicate between front-end and back-end
+- **python**: AI model for recognize similarity of 2 image and python code for hidden data into image
+
