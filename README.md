@@ -1,35 +1,26 @@
-# Build a Full Stack App with Rust, Yew.rs and Actix Web
+# RUST HACKATHON VIETNAM - Team 23
 
-In this article, I'll walk you through the process of building a backend API using the Actix web framework, SQLX, PostgreSQL, and Docker. Once we've created a powerful backend, we'll move on to building a single-page app using the Yew.rs framework. By the end of this tutorial, you'll have a fully functional web app that seamlessly integrates the frontend app with the backend API.
+# Team Member
+Ninh Quoc Bao
+Nguyen Minh Nhat
+Phan Van Nhat
+Truong Vinh Kien
 
-![Build a Full Stack App with Rust, Yew.rs and Actix Web](https://codevoweb.com/wp-content/uploads/2023/03/Build-a-Full-Stack-App-with-Rust-Yew.rs-and-Actix-Web.webp)
+## Problem
 
-## Topics Covered
+In the digital age, protecting copyright for digital products and addressing digital manipulation are critical concerns. Images, videos, and audio files can be easily copied and distributed without permission, leading to piracy and revenue loss for creators. Manipulating digital content, from simple edits like brightness adjustments to advanced AI techniques such as deepfakes and chipfakes, poses significant challenges. These sophisticated manipulations can create highly realistic yet fabricated content, raising serious ethical and legal issues.
 
-- Run the Full-Stack Rust App Locally
-- Setup the Full-Stack Rust App
-- Work on the Library Project
-- Work on the Backend Project
-    - Setup the Rust API Project
-    - Setup PostgreSQL and pgAdmin with Docker
-    - Database Migration with SQLX
-    - Create the SQLX Database Model
-    - Create the Request Validation Structs
-    - Create the CRUD API Route Handlers
-    - Register the API Routes and Setup CORS
-- Work on the Frontend Project
-    - Setup the Yew.rs Project
-    - Setup Tailwind CSS for Styling
-    - Create the API Request Functions
-    - State Management with Yewdux
-    - Create Reusable Components
-    - Yew Component to Add New Feedback Item
-    - Yew Component to Display Feedback Statistics
-    - Yew Component to Display Feedback Information
-    - Yew Component to Display the Feedback Items
-    - Export the Component Files as Modules
-    - Add the Components to the Main File
-- Test the Rust Full-Stack App
+## Project Ideas
 
-Read the entire article here: [https://codevoweb.com/build-full-stack-app-with-rust-yew-and-actix-web/](https://codevoweb.com/build-full-stack-app-with-rust-yew-and-actix-web/)
+Create a system allowing users and creators to register their digital products (images, videos, audio, text) and receive a **certificate** of ownership. This **certificate** would be embedded into the product's data to verify its integrity when needed.
+
+Certificate purpose:
+ - Authenticate that the individual has registered the product as the origin.
+ - Verify the integrity of data in the product (image, video,...). 
+
+Certificate then store in the blockchain for the decentralize storage, transparent data and immutable one.
+
+And when own the certificate, user can exchange this for the profit in the exchange market (certificate now like a NFT)
+
+
 
