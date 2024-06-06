@@ -1,10 +1,11 @@
 # RUST HACKATHON VIETNAM - Team 23
 
 # Team Member
-Ninh Quoc Bao
-Nguyen Minh Nhat
-Phan Van Nhat
-Truong Vinh Kien
+
+- Ninh Quoc Bao
+- Nguyen Minh Nhat
+- Phan Van Nhat
+- Truong Vinh Kien
 
 ## Problem
 
@@ -22,5 +23,5 @@ Certificate then store in the blockchain for the decentralize storage, transpare
 
 And when own the certificate, user can exchange this for the profit in the exchange market (certificate now like a NFT)
 
-
+![idea](/images/idea.png)
 
